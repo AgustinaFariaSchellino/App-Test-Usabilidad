@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Tester - UsabilityHub</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link href="styles.css" rel="stylesheet" />
+
+
+    <style>
+        /* Tarea 3: Reset de Body (100dvh fixed + Sanitización) */
+        html,
+        body {
+            width: 100%;
+            height: 100dvh;
+            /* Dynamic viewport height */
+            overflow: hidden;
+            overflow-x: hidden;
+            /* Seguridad extra */
+            position: fixed;
+            margin: 0;
+            padding: 0;
+            overscroll-behavior: none;
+            scrollbar-gutter: auto !important;
+        }
+
+        /* Enforce 100% width and Box Sizing Armor */
+        #prototipo-container-v2,
+        header,
+        #app {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Tarea 1: El Área de Visualización (Canvas) */
+        #prototipo-container-v2 {
+            /* Alto restante dinámico */
+            flex-grow: 1 !important;
+            height: auto !important;
+
+            /* Margen de seguridad */
+            padding: 2px !important;
+
+            /* Centrado Flex */
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+
+            background-color: #1e1e1e;
+            /* Canvas background */
+        }
+
+        /* GLOBAL RESET & ARMOR */
+        * {
+            box-sizing: border-box !important;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Tarea 4: FULLSCREEN OPTIMIZATION (Dynamic Height) */
+        :fullscreen #prototipo-container-v2,
+        #prototipo-container-v2.is-fullscreen,
+        ::backdrop {
+            height: 100svh !important;
+            padding: 0 !important;
+            background-color: #000;
+            /* Remove header gap in fullscreen */
+        }
+    </style>
+    <script src="js/tailwind-config.js"></script>
+    <style>
+        .prototype-area {
+            /* Fallback */
+            height: calc(100svh - 48px);
+        }
+
+        #desc-toggle:checked~#desc-modal {
+            display: flex;
+        }
+
+        /* Tarea 5: Responsive Mockup Wrapper */
+        .mockup-wrapper {
+            aspect-ratio: 9 / 21;
+            /* Default safe ratio */
+            transition: aspect-ratio 0.3s ease-in-out;
+        }
+
+        /* Fix: Margen extra para App en Fullscreen Móvil */
+        @media (max-width: 800px) {
+
+            :fullscreen .app-mockup,
+            .is-fullscreen .app-mockup {
+                /* Forzamos un alto un poco menor para asegurar márgenes y evitar scroll */
+                height: calc(100svh - 60px) !important;
+                max-height: 90% !important;
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white transition-colors duration-200 overflow-x-hidden">
+    <!-- View Container -->
+    <!-- View Container -->
+    <div id="app" class="flex flex-col w-full max-w-full overflow-x-hidden min-h-screen">
+
+        <!-- VIEW: WELCOME -->
+        <section id="view-welcome" class="view-section w-full relative flex min-h-screen flex-col overflow-hidden">
+            <main class="flex-1 flex flex-col items-center justify-center p-6">
+                <div id="welcome-card"
+                    class="max-w-[520px] w-full flex flex-col items-center bg-white dark:bg-[#1a242f] rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-8 md:p-12 min-h-[300px] justify-center text-center">
+                    <!-- Dynamic Content Container -->
+                    <div id="welcome-loader" class="flex flex-col items-center gap-4">
+                        <svg class="animate-spin h-10 w-10 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                        <p class="text-gray-500 font-medium text-sm">Cargando...</p>
+                    </div>
+                </div>
+            </main>
+        </section>
+
+        <!-- VIEW: PROTOTYPE -->
+        <section id="view-prototype" class="view-section hidden w-full relative flex h-[100svh] flex-col">
+            <!-- Overlay de Descripción (Full Screen Bottom Sheet) -->
+            <!-- Overlay de Descripción (Top Sheet Mode) -->
+            <div id="description-overlay"
+                class="fixed inset-0 z-50 bg-white dark:bg-[#111418] transform -translate-y-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+
+                <!-- Overlay Content -->
+                <div class="flex-1 overflow-y-auto p-6 md:p-10 bg-gray-50 dark:bg-[#0d1014]">
+                    <div
+                        class="max-w-3xl mx-auto bg-white dark:bg-[#1a242f] p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+                        <h4 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Instrucciones</h4>
+                        <p id="overlay-description-text"
+                            class="text-sm md:text-base text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-line text-left">
+                            Cargando descripción...
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Overlay Footer (Botón Cerrar Abajo - "Subir pantalla") -->
+                <div
+                    class="p-3 border-t border-gray-100 dark:border-gray-800 flex justify-center bg-white dark:bg-[#111418]">
+                    <button id="btn-close-description"
+                        class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-[#111418] dark:text-white rounded-full font-bold text-xs transition-all hover:scale-105 shadow-sm">
+                        <span>Volver</span>
+                        <span class="material-symbols-outlined text-sm">keyboard_arrow_up</span>
+                    </button>
+                </div>
+            </div>
+
+            <header
+                class="flex h-12 items-center justify-between border-b border-solid border-[#dbe0e6] dark:border-[#343d48] bg-white dark:bg-background-dark px-4 shrink-0 z-20">
+                <div class="flex items-center gap-4 text-[#111418] dark:text-white">
+                    <!-- Tarea: Reemplazo de Logo por Botón de Expansión -->
+                    <button id="btn-enter-fullscreen"
+                        class="flex items-center justify-center size-8 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-200"
+                        title="Pantalla Completa">
+                        <span class="material-symbols-outlined text-xl">open_in_full</span>
+                    </button>
+                </div>
+                <div class="flex items-center gap-6">
+
+                    <button id="btn-read-description"
+                        class="text-gray-500 dark:text-gray-400 text-xs font-bold hover:text-primary transition-colors whitespace-nowrap flex items-center gap-2">
+                        <span class="material-symbols-outlined text-lg">info</span>
+                        Leer descripción
+                    </button>
+
+                    <button id="btn-finish-prototype"
+                        class="flex h-8 items-center justify-center rounded-lg px-3 bg-primary hover:bg-primary/90 text-white text-xs font-bold shadow-md shadow-primary/20 transition-all whitespace-nowrap">
+                        Finalizar Test
+                    </button>
+                </div>
+            </header>
+
+            <main id="prototipo-container-v2">
+
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-white/20">
+                    <p class="text-sm font-medium">Cargando...</p>
+                </div>
+            </main>
+        </section>
+
+    <script src="js/tester-navigation.js"></script>
+    <script src="js/test-interface.js"></script>
+</body>
+
+</html>

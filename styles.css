@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    scrollbar-gutter: stable;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: #334155;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+/* Color para cuando el botón está activo (mismo que el botón Nuevo Test) */
+.nav-item.active {
+    color: #007bff !important;
+    /* Ajustá este código hexadecimal al azul exacto de tu botón 'Nuevo test' */
+}
+
+/* Header Stability Fix */
+#admin-header-container {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    width: 100%;
+}
+
+/* Navigation Transitions */
+.view-section {
+    transition: opacity 0.3s ease-in-out;
+    opacity: 1;
+}
+
+.view-section.fade-out {
+    opacity: 0;
+    pointer-events: none;
+    /* Prevent clicks during fade out */
+}
+
+/* Helper to completely hide element after transition */
+.hidden {
+    display: none !important;
+}

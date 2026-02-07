@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin - Flux</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="styles.css" rel="stylesheet" />
+    <script src="js/tailwind-config.js"></script>
+
+    <style>
+        .hidden {
+            display: none !important;
+        }
+
+        .view-section {
+            width: 100%;
+        }
+
+        /* Mobile: inputs min 16px para evitar zoom iOS */
+        @media (max-width: 767px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="bg-white dark:bg-background-dark font-display text-[#111418] dark:text-white transition-colors duration-200 overflow-x-hidden flex flex-col min-h-screen">
+    <!-- Header Admin Container -->
+    <div id="admin-header-container" class="sticky top-0 z-50 bg-white dark:bg-background-dark"></div>
+    <script src="js/header-admin.js"></script>
+
+    <!-- View Container -->
+    <div id="admin-content" class="flex flex-col flex-1 relative">
+
+        <!-- SECTION: HOME -->
+        <section id="section-home" class="view-section flex-1 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-12">
+            <div class="max-w-[640px] w-full flex flex-col items-center text-center">
+                <div class="flex flex-col gap-3 mb-10">
+                    <h2 class="text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+                        Valida tus ideas al toque
+                    </h2>
+                    <p class="text-gray-500 dark:text-gray-400 text-lg leading-relaxed max-w-[500px] mx-auto">
+                        Comparte tus prototipos con navegación libre y obtén información valiosa mediante
+                        preguntas finales personalizadas.
+                    </p>
+                </div>
+                <button id="btn-create-test-home"
+                    class="group relative flex w-full sm:min-w-[260px] sm:w-auto min-h-[48px] items-center justify-center gap-3 rounded-xl bg-primary px-8 py-4 text-white text-base font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:-translate-y-0.5 transition-all active:scale-95">
+                    <span class="material-symbols-outlined">add_circle</span>
+                    <span>Crear nuevo test</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION: TEST LIST (My Tests) -->
+        <section id="section-test-list"
+            class="view-section hidden flex-1 flex flex-col items-center p-4 sm:p-6 lg:p-12 bg-gray-50 dark:bg-background-dark/50">
+            <div class="max-w-[1000px] w-full">
+                <div class="mb-6 md:mb-8">
+                    <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white mb-1 sm:mb-2">Mis pruebas</h2>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Gestiona y revisa los resultados de tus tests de usabilidad.</p>
+                </div>
+                <!-- Mobile: Cards (< 768px) -->
+                <div id="test-list-cards" class="space-y-4 md:hidden"></div>
+                <!-- Desktop: Tabla (>= 768px) - max-md:hidden evita conflicto con .hidden del CSS -->
+                <div class="max-md:hidden bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800">
+                                <th
+                                    class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                                    Nombre del Test</th>
+                                <th
+                                    class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                                    Fecha de creación</th>
+                                <th
+                                    class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                                    Link al Test</th>
+                                <th
+                                    class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                                    Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition-colors">
+                                <td class="px-6 py-4"><span class="font-semibold text-gray-900 dark:text-white">Rediseño
+                                        del flujo de checkout</span></td>
+                                <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">24/10/2023</td>
+                                <td class="px-6 py-4"><a
+                                        class="text-primary hover:underline flex items-center gap-1 text-sm font-medium"
+                                        href="#"><span class="material-symbols-outlined text-[18px]">link</span> Ver
+                                        test</a></td>
+                                <td class="px-6 py-4"><button
+                                        class="flex items-center gap-2 text-sm font-bold text-green-600 hover:text-green-700 bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-lg transition-colors"><span
+                                            class="material-symbols-outlined text-[18px]">description</span> Resultados
+                                        (Excel)</button></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition-colors">
+                                <td class="px-6 py-4"><span
+                                        class="font-semibold text-gray-900 dark:text-white">Onboarding App Móvil</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">18/10/2023</td>
+                                <td class="px-6 py-4"><a
+                                        class="text-primary hover:underline flex items-center gap-1 text-sm font-medium"
+                                        href="#"><span class="material-symbols-outlined text-[18px]">link</span> Ver
+                                        test</a></td>
+                                <td class="px-6 py-4"><button
+                                        class="flex items-center gap-2 text-sm font-bold text-green-600 hover:text-green-700 bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-lg transition-colors"><span
+                                            class="material-symbols-outlined text-[18px]">description</span> Resultados
+                                        (Excel)</button></td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-800/30 transition-colors">
+                                <td class="px-6 py-4"><span class="font-semibold text-gray-900 dark:text-white">Test de
+                                        Navegación Home</span></td>
+                                <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">05/09/2023</td>
+                                <td class="px-6 py-4"><a
+                                        class="text-primary hover:underline flex items-center gap-1 text-sm font-medium"
+                                        href="#"><span class="material-symbols-outlined text-[18px]">link</span> Ver
+                                        test</a></td>
+                                <td class="px-6 py-4"><button
+                                        class="flex items-center gap-2 text-sm font-bold text-green-600 hover:text-green-700 bg-green-50 dark:bg-green-900/20 px-3 py-1.5 rounded-lg transition-colors"><span
+                                            class="material-symbols-outlined text-[18px]">description</span> Resultados
+                                        (Excel)</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: CREATE TEST -->
+        <section id="section-create-test" class="view-section hidden flex-1 flex flex-col items-center p-4 sm:p-6 lg:p-12">
+            <div class="w-full max-w-[720px] px-0 sm:px-0">
+                <div class="mb-8">
+                    <button id="btn-back-to-home"
+                        class="flex items-center gap-2 text-gray-500 hover:text-primary transition-colors text-sm font-medium">
+                        <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                        Volver
+                    </button>
+                </div>
+                <!-- Content same as before -->
+                <div class="mb-10">
+                    <h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-2">Creación de Test
+                    </h2>
+                    <p class="text-gray-500 dark:text-gray-400">Configura los detalles de tu nueva prueba de usabilidad.
+                    </p>
+                </div>
+                <form class="space-y-8" onsubmit="return false;">
+                    <div class="space-y-6">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-sm font-bold text-gray-700 dark:text-gray-300" for="test-title">Título
+                                del Test</label>
+                            <input
+                                class="block w-full rounded-xl border-gray-200 dark:border-gray-700 dark:bg-gray-900/50 focus:border-primary focus:ring-primary py-3 px-4 text-base transition-all min-h-[48px]"
+                                id="test-title" placeholder="Ej: Rediseño del flujo de checkout" type="text" required />
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-sm font-bold text-gray-700 dark:text-gray-300"
+                                for="test-desc">Descripción del Test</label>
+                            <textarea
+                                class="block w-full rounded-xl border-gray-200 dark:border-gray-700 dark:bg-gray-900/50 focus:border-primary focus:ring-primary py-3 px-4 text-base transition-all"
+                                id="test-desc" placeholder="Describe brevemente el objetivo de esta prueba..."
+                                rows="3"></textarea>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-sm font-bold text-gray-700 dark:text-gray-300">Tipo de
+                                Dispositivo</label>
+                            <div
+                                class="relative flex p-1 bg-gray-100 dark:bg-gray-800 rounded-[20px] shadow-inner select-none isolate">
+                                <!-- Sliding Pill -->
+                                <div id="device-pill"
+                                    class="absolute top-1 left-1 bottom-1 w-[calc(50%-4px)] bg-white dark:bg-[#1a242f] rounded-[16px] shadow-sm transition-transform duration-300 ease-in-out z-0">
+                                </div>
+
+                                <label class="flex-1 cursor-pointer z-10 relative text-center">
+                                    <input type="radio" name="device_type" value="App" class="peer sr-only" checked>
+                                    <span
+                                        class="block py-2.5 text-sm font-bold text-gray-500 dark:text-gray-400 peer-checked:text-primary transition-colors duration-300">
+                                        App (Mobile)
+                                    </span>
+                                </label>
+                                <label class="flex-1 cursor-pointer z-10 relative text-center">
+                                    <input type="radio" name="device_type" value="Web" class="peer sr-only">
+                                    <span
+                                        class="block py-2.5 text-sm font-bold text-gray-500 dark:text-gray-400 peer-checked:text-primary transition-colors duration-300">
+                                        Web (Desktop)
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-sm font-bold text-gray-700 dark:text-gray-300" for="figma-link">Link del
+                                Prototipo</label>
+                            <input
+                                class="block w-full rounded-xl border-gray-200 dark:border-gray-700 dark:bg-gray-900/50 focus:border-primary focus:ring-primary py-3 px-4 text-base transition-all min-h-[48px]"
+                                id="figma-link" placeholder="https://www.figma.com/proto/..." type="text" required />
+                            <p class="text-xs text-gray-400 mt-1 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">info</span>
+                                Asegúrate de activar la configuración "Hide UI" antes de copiar el enlace.
+                            </p>
+                        </div>
+                    </div>
+                    <hr class="border-gray-100 dark:border-gray-800" />
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-bold text-gray-900 dark:text-white">Preguntas para el usuario</h3>
+                            <button id="btn-add-question"
+                                class="text-primary hover:text-primary/80 font-bold text-sm flex items-center gap-1"
+                                type="button">
+                                <span class="material-symbols-outlined text-[20px]">add_circle</span>
+                                Añadir pregunta
+                            </button>
+                        </div>
+                        <div id="questions-container" class="space-y-4">
+                            <div
+                                class="p-5 rounded-2xl bg-gray-50 dark:bg-gray-900/50 border border-gray-100 dark:border-gray-800 flex flex-col gap-4">
+                                <div class="flex justify-between items-start gap-4">
+                                    <div class="flex-1">
+                                        <label
+                                            class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 block">Pregunta
+                                            1</label>
+                                        <input
+                                            class="block w-full bg-white dark:bg-background-dark rounded-lg border-gray-200 dark:border-gray-700 focus:border-primary focus:ring-primary py-2 px-3 text-base min-h-[44px]"
+                                            value="" type="text" placeholder="Escribe tu pregunta aquí..." />
+                                    </div>
+                                    <button
+                                        class="btn-delete-question text-gray-400 hover:text-red-500 transition-colors p-1 mt-6"
+                                        type="button"><span class="material-symbols-outlined">delete</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-10 flex justify-center">
+                        <button id="btn-generate-link" type="button"
+                            class="group relative flex w-full sm:min-w-[320px] sm:w-auto min-h-[48px] items-center justify-center gap-3 rounded-xl bg-primary px-8 py-4 text-white text-base font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:-translate-y-0.5 transition-all active:scale-95">
+                            <span class="material-symbols-outlined">add_link</span>
+                            <span>Generar enlace de test</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- ========== SECCIÓN: RESULTADOS / ANSWERS (integrada desde nueva-seccion/answers.html) ========== -->
+        <section id="section-answers" class="view-section hidden flex-1 flex flex-col items-center p-4 sm:p-6 lg:p-12 bg-gray-50 dark:bg-background-dark/50">
+            <div class="max-w-[1000px] w-full">
+                <div class="mb-8">
+                    <button id="btn-back-to-tests"
+                        class="inline-flex items-center gap-2 text-primary hover:text-primary/80 text-sm font-semibold transition-colors group">
+                        <span class="material-symbols-outlined text-[20px] transition-transform group-hover:-translate-x-1">arrow_back</span>
+                        Volver a Mis pruebas
+                    </button>
+                </div>
+                <div class="mb-8 sm:mb-12">
+                    <h2 id="answers-title" class="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 dark:text-white mb-2">Respuestas del test</h2>
+                    <p id="answers-subtitle" class="text-gray-500 dark:text-gray-400">Detalle de las respuestas abiertas y grabaciones de audio recolectadas.</p>
+                </div>
+                <div id="answers-loader" class="flex flex-col items-center justify-center py-16 gap-4">
+                    <svg class="animate-spin h-10 w-10 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Cargando...</p>
+                </div>
+                <div id="answers-content" class="space-y-8 sm:space-y-12 w-full hidden">
+                    <!-- Se renderiza dinámicamente cada pregunta con sus respuestas en tarjetas -->
+                </div>
+                <div id="answers-empty" class="hidden py-12 text-center text-gray-500 dark:text-gray-400 italic">
+                    No hay respuestas registradas para este test.
+                </div>
+                <div id="answers-error" class="hidden py-12 text-center text-red-500 dark:text-red-400 font-medium">
+                    No se pudieron cargar las respuestas. Verificá tu conexión.
+                </div>
+                <div class="mt-16 pb-12 flex justify-center">
+                    <button id="btn-back-to-tests-footer"
+                        class="flex w-full sm:w-auto min-h-[48px] items-center justify-center gap-2 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-base font-bold h-12 px-10 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all active:scale-95 shadow-sm">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        <span>Volver a Mis pruebas</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Modal -->
+    <div id="success-modal"
+        class="hidden fixed inset-0 z-[60] items-center justify-center p-4 sm:p-6 bg-black/50 backdrop-blur-sm overflow-y-auto">
+        <div
+            class="bg-white dark:bg-background-dark w-full max-w-md rounded-2xl shadow-2xl p-6 sm:p-8 m-4 border border-gray-100 dark:border-gray-800 text-center">
+            <div
+                class="size-16 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span class="material-symbols-outlined text-4xl">check_circle</span>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">¡Test creado con éxito!</h3>
+            <p class="text-gray-500 dark:text-gray-400 mb-8 text-sm">Ya puedes compartir este enlace para comenzar.</p>
+
+            <div class="mb-8">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 block text-left">Enlace del
+                    test</label>
+                <div class="flex gap-2">
+                    <input id="test-link-input"
+                        class="block w-full bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 rounded-lg text-base text-gray-600 dark:text-gray-300 py-3 px-4 min-h-[48px] focus:ring-0 focus:border-gray-200"
+                        readonly="" type="text" value="https://usabilityhub.io/test/7x9k-2p4l-90qr" />
+                    <button id="btn-copy-link"
+                        class="flex items-center justify-center min-h-[48px] min-w-[48px] bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 px-4 rounded-lg transition-colors font-semibold text-sm shrink-0">
+                        <span class="material-symbols-outlined text-[20px]">content_copy</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <button id="btn-close-modal"
+                    class="w-full min-h-[48px] bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-md active:scale-95">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/questions.js"></script>
+    <script src="js/create-test.js"></script>
+    <script src="js/test-list.js"></script>
+    <script src="js/responses.js"></script>
+</body>
+
+</html>
