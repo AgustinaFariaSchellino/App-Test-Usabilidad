@@ -151,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function startRecording(questionIndex) {
+        audioChunks = [];
         const card = questionsFormContent.querySelector(`.question-card[data-question-index="${questionIndex}"]`);
         if (!card) return;
         const initial = card.querySelector('.btn-audio-initial');
@@ -161,7 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             currentStream = await navigator.mediaDevices.getUserMedia({ audio: true });
             mediaRecorder = new MediaRecorder(currentStream);
-            audioChunks = [];
 
             mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) audioChunks.push(e.data); };
 
@@ -170,6 +170,11 @@ document.addEventListener('DOMContentLoaded', () => {
             recording.classList.remove('hidden');
             card.querySelector('.audio-control-wrapper').classList.add('w-full');
             textarea.disabled = true;
+            const currentVal = (textarea.value || '').trim();
+            const isPlaceholder = currentVal === 'Grabando audio...' || currentVal === 'Traduciendo audio...' || currentVal === 'Procesando transcripción...';
+            if (!isPlaceholder && currentVal) {
+                textarea.dataset.contentBeforeRecording = currentVal;
+            }
             textarea.value = 'Grabando audio...';
             textarea.classList.add('italic', 'text-gray-400');
         } catch (err) {
@@ -201,13 +206,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function sendAudioToN8n(blob, questionIndex, card, processingEl, textarea) {
+        console.log('Tamaño del audio enviado:', blob.size);
         const formData = new FormData();
         formData.append('audio', blob, 'recording.webm');
 
-        fetch(AUDIO_WEBHOOK, {
+        const url = AUDIO_WEBHOOK + '?t=' + Date.now();
+        fetch(url, {
             method: 'POST',
             body: formData,
-            mode: 'cors'
+            mode: 'cors',
+            cache: 'no-store'
         })
             .then(resp => {
                 console.log('Status:', resp.status);
@@ -248,15 +256,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!text) {
                     textarea.disabled = false;
                     textarea.classList.remove('italic', 'text-gray-400');
+                    delete textarea.dataset.contentBeforeRecording;
                     resetAudioUI(card, processingEl);
                     return;
                 }
-                const existing = (textarea.value || '').trim();
-                const isPlaceholder = existing === 'Traduciendo audio...' || existing === 'Grabando audio...' || existing === 'Procesando transcripción...';
-                if (isPlaceholder) {
-                    textarea.value = text;
+                const savedBeforeRecording = textarea.dataset.contentBeforeRecording || '';
+                delete textarea.dataset.contentBeforeRecording;
+                if (savedBeforeRecording) {
+                    textarea.value = savedBeforeRecording + ' ' + text;
                 } else {
-                    textarea.value += ' ' + text;
+                    textarea.value = text;
                 }
                 textarea.disabled = false;
                 textarea.classList.remove('italic', 'text-gray-400');
@@ -266,7 +275,9 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(err => {
                 console.error('Error enviando audio:', err);
-                textarea.value = '';
+                const saved = textarea.dataset.contentBeforeRecording || '';
+                delete textarea.dataset.contentBeforeRecording;
+                textarea.value = saved;
                 textarea.disabled = false;
                 textarea.classList.remove('italic', 'text-gray-400');
                 resetAudioUI(card, processingEl);
