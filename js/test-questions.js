@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const QUESTIONS_ENDPOINT = `https://n8n-nube-jw30.onrender.com/webhook/test-especifico?id=${encodeURIComponent(id)}&t=${Date.now()}`;
-    const RESPONSES_ENDPOINT = 'https://n8n-nube-jw30.onrender.com/webhook-test/guardar-feedback';
+    const RESPONSES_ENDPOINT = 'https://n8n-nube-jw30.onrender.com/webhook/guardar-feedback';
     const AUDIO_WEBHOOK = 'https://n8n-nube-jw30.onrender.com/webhook/receptor-audio';
 
     const viewQuestions = document.getElementById('view-questions');
